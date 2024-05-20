@@ -1,0 +1,77 @@
+<!-- views/home.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>find MY-NOTEs</title>
+    <link rel="stylesheet" href="/stylesheet/home.css">
+</head>
+<body>
+    <div id="navbar">
+        <p><span style="color: red;">find</span> <span style="color: white; font-weight: bold;">MY-NOTEs</span></p>
+        <div id="buttonDiv">
+            <button type="button" id="uploadButton" onclick="showForm()">Upload</button>
+            <button type="button" id="logInButton">Log In</button>
+        </div>
+    </div>
+    <div id="category">
+        <a href="">Compute Science</a>
+        <a href="">Electrical Engineering</a>
+        <a href="">Civil Engineering</a>
+        <a href="">Mechanical Engineering</a>
+    </div>
+
+    <form id="uploadForm" action="">
+        <p>File Name</p>
+        <input type="text" id="fileName" placeholder="Enter File Name here">
+        <p>Upload PDF</p>
+        <input id="pdfFile" type="file" name="upload" accept="application/pdf,application/vnd.ms-excel" required />
+        <p>Choose Category</p>
+        <div id="categoryDiv">
+            <div class="categoryItem">
+                <input type="radio" id="cs" name="category" value="computerScience">
+                <label for="cs">Computer Science</label>
+            </div>
+            <div class="categoryItem">
+                <input type="radio" name="category" id="me" value="mechanicalEngineering">
+                <label for="me">Mechanical Engineering</label>
+            </div>
+            <div class="categoryItem">
+                <input type="radio" name="category" id="ce" value="civilEngineering">
+                <label for="ce">Civil Engineering</label>
+            </div>
+            <div class="categoryItem">
+                <input type="radio" name="category" id="ee" value="electricalEngineering">
+                <label for="ee">Electrical Engineering</label>
+            </div>
+        </div>
+        <div id="categoryButton">
+            <button onclick="hideForm()" id="cancelButton" type="button">Cancel</button>
+            <div id="categoryButton2">
+                <button id="resetButton" type="reset">Reset</button>
+                <button id="submitButton" type="submit">Upload</button>
+            </div>
+        </div>
+
+    </form>
+
+    <div id="pdfs">
+        <div class="pdfCard">
+            <img id="thumbnail" src="/img/1.jpg" alt="">
+            <p id="pdfTitle">DSA PDF</p>
+            <p id="addedBy">Added By Hemilton</p>
+            <div id="cardButton">
+                <div id="likeDiv">
+                    <img src="/img/like.png" alt="">
+                    <p>50</p>
+                    
+                </div>
+                <img src="/img/save.png" alt="">
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/home.js"></script>
+</body>
+</html>
