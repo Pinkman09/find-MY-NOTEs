@@ -16,17 +16,17 @@
         </div>
     </div>
     <div id="category">
-        <a href="">Compute Science</a>
+        <a href="">Computer Science</a>
         <a href="">Electrical Engineering</a>
         <a href="">Civil Engineering</a>
         <a href="">Mechanical Engineering</a>
     </div>
 
-    <form id="uploadForm" action="">
+    <form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data">
         <p>File Name</p>
-        <input type="text" id="fileName" placeholder="Enter File Name here">
+        <input type="text" id="fileName" name="fileName" placeholder="Enter File Name here">
         <p>Upload PDF</p>
-        <input id="pdfFile" type="file" name="upload" accept="application/pdf,application/vnd.ms-excel" required />
+        <input id="pdfFile" type="file" name="pdfFile" accept="application/pdf,application/vnd.ms-excel" required />
         <p>Choose Category</p>
         <div id="categoryDiv">
             <div class="categoryItem">
@@ -53,23 +53,23 @@
                 <button id="submitButton" type="submit">Upload</button>
             </div>
         </div>
-
     </form>
 
     <div id="pdfs">
+        <% pdfs.forEach(pdf => { %>
         <div class="pdfCard">
-            <img id="thumbnail" src="/img/1.jpg" alt="">
-            <p id="pdfTitle">DSA PDF</p>
-            <p id="addedBy">Added By Hemilton</p>
+            <img id="thumbnail" src="<%= pdf.thumbnailPath %>" alt="Thumbnail">
+            <p id="pdfTitle"><%= pdf.fileName %></p>
+            <p id="addedBy">Added By <%= pdf.addedBy %></p>
             <div id="cardButton">
                 <div id="likeDiv">
-                    <img src="/img/like.png" alt="">
-                    <p>50</p>
-                    
+                    <img src="/img/like.png" alt="Like">
+                    <p><%= pdf.likeCount %></p>
                 </div>
-                <img src="/img/save.png" alt="">
+                <img src="/img/save.png" alt="Save">
             </div>
         </div>
+        <% }); %>
     </div>
 
     <script src="/js/home.js"></script>
