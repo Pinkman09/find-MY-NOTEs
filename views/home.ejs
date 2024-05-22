@@ -64,9 +64,11 @@
     <div id="pdfs">
         <% pdfs.forEach(pdf => { %>
         <div class="pdfCard">
-            <img id="thumbnail" src="<%= pdf.thumbnailPath %>" alt="Thumbnail">
-            <p id="pdfTitle"><%= pdf.fileName %></p>
-            <p id="addedBy">Added By <%= pdf.addedBy %></p>
+            <a href="/viewPdf/<%= pdf.id %>">
+                <img id="thumbnail" src="<%= pdf.thumbnailPath %>" alt="Thumbnail">
+                <p id="pdfTitle"><%= pdf.fileName %></p>
+                <p id="addedBy">Added By <%= pdf.addedBy %></p>
+            </a>
             <div id="cardButton">
                 <div id="likeDiv" data-pdf-id="<%= pdf.id %>">
                     <img src="<%= likedPdfs.includes(pdf.id) ? '/img/liked.png' : '/img/like.png' %>" alt="Like" class="likeIcon">
