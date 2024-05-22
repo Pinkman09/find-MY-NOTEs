@@ -10,6 +10,7 @@
     <div id="userDetail">
         <img src="/img/user.png" alt="User Image">
         <h3><%= username %></h3>
+        <button onclick="logout()">Logout</button> <!-- Add logout button here -->
     </div>
     <div id="buttonDiv">
         <a href="#" id="likedLink" class="active">Liked PDF</a>
@@ -19,7 +20,9 @@
         <div id="likedPdfs">
             <% likedPdfs.forEach(pdf => { %>
             <div class="pdfCard">
-                <img id="thumbnail" src="<%= pdf.thumbnailPath %>" alt="Thumbnail">
+                <a href="/viewPdf/<%= pdf.id %>"> <!-- Add anchor tag here -->
+                    <img class="thumbnail" src="<%= pdf.thumbnailPath %>" alt="Thumbnail">
+                </a>
                 <p id="pdfTitle"><%= pdf.fileName %></p>
                 <p id="addedBy">Added By <%= pdf.addedBy %></p>
                 <div id="cardButton">
@@ -37,7 +40,9 @@
         <div id="savedPdfs" style="display: none;">
             <% savedPdfs.forEach(pdf => { %>
             <div class="pdfCard">
-                <img id="thumbnail" src="<%= pdf.thumbnailPath %>" alt="Thumbnail">
+                <a href="/viewPdf/<%= pdf.id %>"> <!-- Add anchor tag here -->
+                    <img class="thumbnail" src="<%= pdf.thumbnailPath %>" alt="Thumbnail">
+                </a>
                 <p id="pdfTitle"><%= pdf.fileName %></p>
                 <p id="addedBy">Added By <%= pdf.addedBy %></p>
                 <div id="cardButton">
@@ -53,30 +58,35 @@
             <% }); %>
         </div>
     </div>
+    
     <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const likedLink = document.getElementById('likedLink');
-    const savedLink = document.getElementById('savedLink');
-    const likedPdfsDiv = document.getElementById('likedPdfs');
-    const savedPdfsDiv = document.getElementById('savedPdfs');
-
-    likedLink.addEventListener('click', function(event) {
-        event.preventDefault();
-        likedLink.classList.add('active');
-        savedLink.classList.remove('active');
-        likedPdfsDiv.style.display = 'grid';
-        savedPdfsDiv.style.display = 'none';
-    });
-
-    savedLink.addEventListener('click', function(event) {
-        event.preventDefault();
-        savedLink.classList.add('active');
-        likedLink.classList.remove('active');
-        likedPdfsDiv.style.display = 'none';
-        savedPdfsDiv.style.display = 'grid';
-    });
-});
-
+        function logout() {
+            // Perform logout actions here, such as redirecting to the logout route
+            window.location.href = "/logout";
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const likedLink = document.getElementById('likedLink');
+            const savedLink = document.getElementById('savedLink');
+            const likedPdfsDiv = document.getElementById('likedPdfs');
+            const savedPdfsDiv = document.getElementById('savedPdfs');
+        
+            likedLink.addEventListener('click', function(event) {
+                event.preventDefault();
+                likedLink.classList.add('active');
+                savedLink.classList.remove('active');
+                likedPdfsDiv.style.display = 'grid';
+                savedPdfsDiv.style.display = 'none';
+            });
+        
+            savedLink.addEventListener('click', function(event) {
+                event.preventDefault();
+                savedLink.classList.add('active');
+                likedLink.classList.remove('active');
+                likedPdfsDiv.style.display = 'none';
+                savedPdfsDiv.style.display = 'grid';
+            });
+        });
     </script>
 </body>
 </html>

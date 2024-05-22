@@ -199,28 +199,23 @@ app.post('/signIn', (req, res) => {
         // If user found, set the loggedInUser property in the session
         req.session.loggedInUserId = results[0].id; // Assuming the ID is in the first result
         req.session.username = results[0].username; // Store the username in the session
+
+        // Redirect the user to the home page after successful login
         res.redirect('/');
     });
 });
 
-// Route to handle user logout
-app.get('/logout', (req, res) => {
-    req.session.destroy((err) => {
-        if (err) {
-            console.error('Error destroying session:', err);
-            res.status(500).send('Logout failed');
-        } else {
-            res.redirect('/');
-        }
-    });
-});
-
 // Route to handle liking a PDF
-app.post('/likePdf/:pdfId', requireLogin, (req, res) => {
-    const userId = req.session.loggedInUserId;
-    const pdfId = req.params.pdfId;
+app.post('/like', requireLogin, (req, res) => {
+    const { pdfId } = req.body;
+    const userId = req.session.loggedInUserId; // Assuming you store the user ID in the session
 
-    const checkSql = 'SELECT * FROM user_pdf_liked WHERE user_id = ? AND pdf_id = ?';
+    if (!userId) {
+        return res.status(401).send('User not logged in');
+    }
+
+    // Check if the user has already liked this PDF
+    const checkSql = `SELECT * FROM user_pdf_liked WHERE user_id = ? AND pdf_id = ?`;
     db.query(checkSql, [userId, pdfId], (err, results) => {
         if (err) {
             console.error(err);
@@ -229,59 +224,155 @@ app.post('/likePdf/:pdfId', requireLogin, (req, res) => {
         }
 
         if (results.length > 0) {
-            res.status(400).send('PDF already liked by the user');
+            res.send('Already Liked');
             return;
         }
 
-        const likeSql = 'INSERT INTO user_pdf_liked (user_id, pdf_id) VALUES (?, ?)';
-        db.query(likeSql, [userId, pdfId], (err, result) => {
+        const sql = `INSERT INTO user_pdf_liked (user_id, pdf_id) VALUES (?, ?)`;
+        db.query(sql, [userId, pdfId], (err, result) => {
             if (err) {
                 console.error(err);
                 res.status(500).send('Database error');
-                return;
-            }
+            } else {
+                // Update the like count
+                const updateSql = `UPDATE pdfs SET likeCount = likeCount + 1 WHERE id = ?`;
+                db.query(updateSql, [pdfId], (err, updateResult) => {
+                    if (err) {
+                        console.error(err);
+                        res.status(500).send('Database error');
+                        return;
+                    }
 
-            const updateLikeCountSql = 'UPDATE pdfs SET likeCount = likeCount + 1 WHERE id = ?';
-            db.query(updateLikeCountSql, [pdfId], (err, updateResult) => {
+                    res.send('Liked');
+                });
+            }
+        });
+    });
+});
+
+// Route to handle saving a PDF
+app.post('/save', requireLogin, (req, res) => {
+    const { pdfId } = req.body;
+    const userId = req.session.loggedInUserId; // Assuming you store the user ID in the session
+
+    if (!userId) {
+        return res.status(401).send('User not logged in');
+    }
+
+    // Check if the user has already saved this PDF
+    const checkSql = `SELECT * FROM user_pdf_saved WHERE user_id = ? AND pdf_id = ?`;
+    db.query(checkSql, [userId, pdfId], (err, results) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send('Database error');
+            return;
+        }
+
+        if (results.length > 0) {
+            res.send('Already Saved');
+            return;
+        }
+
+        const sql = `INSERT INTO user_pdf_saved (user_id, pdf_id) VALUES (?, ?)`;
+    db.query(sql, [userId, pdfId], (err, result) => {
+            if (err) {
+                console.error(err);
+                res.status(500).send('Database error');
+            } else {
+                res.send('Saved');
+            }
+        });
+    });
+});
+
+// Route to handle unliking a PDF
+app.post('/unlike', requireLogin, (req, res) => {
+    const { pdfId } = req.body;
+    const userId = req.session.loggedInUserId; // Assuming you store the user ID in the session
+
+    if (!userId) {
+        return res.status(401).send('User not logged in');
+    }
+
+    const sql = `DELETE FROM user_pdf_liked WHERE user_id = ? AND pdf_id = ?`;
+    db.query(sql, [userId, pdfId], (err, result) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send('Database error');
+        } else {
+            // Update the like count
+            const updateSql = `UPDATE pdfs SET likeCount = likeCount - 1 WHERE id = ?`;
+            db.query(updateSql, [pdfId], (err, updateResult) => {
                 if (err) {
                     console.error(err);
                     res.status(500).send('Database error');
                     return;
                 }
 
-                res.sendStatus(200);
+                res.send('Unliked');
             });
-        });
+        }
     });
 });
 
-// Route to handle saving a PDF
-app.post('/savePdf/:pdfId', requireLogin, (req, res) => {
-    const userId = req.session.loggedInUserId;
-    const pdfId = req.params.pdfId;
+// Route to handle unsaving a PDF
+app.post('/unsave', requireLogin, (req, res) => {
+    const { pdfId } = req.body;
+    const userId = req.session.loggedInUserId; // Assuming you store the user ID in the session
 
-    const checkSql = 'SELECT * FROM user_pdf_saved WHERE user_id = ? AND pdf_id = ?';
-    db.query(checkSql, [userId, pdfId], (err, results) => {
+    if (!userId) {
+        return res.status(401).send('User not logged in');
+    }
+
+    const sql = `DELETE FROM user_pdf_saved WHERE user_id = ? AND pdf_id = ?`;
+    db.query(sql, [userId, pdfId], (err, result) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send('Database error');
+        } else {
+            res.send('Unsaved');
+        }
+    });
+});
+
+// Route to handle user account
+app.get('/userAccount', requireLogin, (req, res) => {
+    const userId = req.session.loggedInUserId;
+    const username = req.session.username;
+
+    const likedSql = `
+        SELECT p.* 
+        FROM pdfs p 
+        JOIN user_pdf_liked upl ON p.id = upl.pdf_id 
+        WHERE upl.user_id = ?
+    `;
+
+    const savedSql = `
+        SELECT p.* 
+        FROM pdfs p 
+        JOIN user_pdf_saved ups ON p.id = ups.pdf_id 
+        WHERE ups.user_id = ?
+    `;
+
+    db.query(likedSql, [userId], (err, likedResults) => {
         if (err) {
             console.error(err);
             res.status(500).send('Database error');
             return;
         }
 
-        if (results.length > 0) {
-            res.status(400).send('PDF already saved by the user');
-            return;
-        }
-
-        const saveSql = 'INSERT INTO user_pdf_saved (user_id, pdf_id) VALUES (?, ?)';
-        db.query(saveSql, [userId, pdfId], (err, result) => {
+        db.query(savedSql, [userId], (err, savedResults) => {
             if (err) {
                 console.error(err);
                 res.status(500).send('Database error');
                 return;
             }
 
-            res.sendStatus(200);
+            res.render('userAccount', {
+                username: username,
+                likedPdfs: likedResults,
+                savedPdfs: savedResults
+            });
         });
     });
 });
@@ -306,10 +397,22 @@ app.get('/viewPdf/:pdfId', (req, res) => {
         res.render('viewPdf', { pdf });  // Correctly pass the pdf object to the template
     });
 });
-
+// Route to handle user logout
+app.get('/logout', (req, res) => {
+    // Destroy the session
+    req.session.destroy(err => {
+        if (err) {
+            console.error('Error destroying session:', err);
+            res.status(500).send('Error logging out');
+            return;
+        }
+        // Redirect the user to the login page after successful logout
+        res.redirect('/');
+    });
+});
 
 // Start the server
-const port = 3000;
-app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
 });

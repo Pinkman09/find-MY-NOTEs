@@ -13,7 +13,7 @@ body {
     width: 400px;
     height: 150px;
     display: grid;
-    grid-template-rows: auto auto;
+    grid-template-rows: auto auto auto;
     text-align: center;
     justify-content: space-evenly;
 }
