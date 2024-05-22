@@ -1,0 +1,155 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
+    
+}
+#userDetail {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+
+    width: 400px;
+    height: 150px;
+    display: grid;
+    grid-template-rows: auto auto;
+    text-align: center;
+    justify-content: space-evenly;
+}
+#userDetail img {
+    height: 100px;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    object-fit: contain;
+}
+
+
+#userDetail h3 {
+    margin: 0px;
+    padding: 0px;
+}
+
+#buttonDiv {
+    
+    width: 200px;
+
+    margin: auto;
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: space-evenly;
+    border-bottom: 1px solid black;
+}
+#buttonDiv a {
+    /* background-color: rgb(0, 0, 0); */
+    /* color: white; */
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 15px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+
+/* ////////////////////////////////// */
+#thumbnail {
+    margin: auto;
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+#pdfTitle {
+    font-weight: bold;
+    padding: 0px;
+    margin: 0px;
+}
+#likeDiv {
+    display: grid;
+    grid-template-columns: auto auto;
+    align-items: end;
+    
+}
+#likeDiv p {
+    margin: 0px;
+    padding: 0px;
+}
+#cardButton {
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: space-between;
+    align-items: end;
+}
+#cardButton img {
+    
+   height: 20px;
+   width: 20px;
+}
+
+#addedBy {
+    padding: 0px;
+    margin: 0px;
+    font-size: 10px;
+}
+.pdfCard {
+    margin-bottom: 10px;
+    display: grid;
+    grid-template-rows: auto auto auto auto;
+    padding: 5px;
+    border-radius: 5px;
+    width: 150px;
+    height: 200px;
+    background-color: white;
+    
+}
+
+#likedPdfs, #savedPdfs {
+    width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
+    display: grid; /* Default display property */
+    padding: 10px;
+    grid-template-columns: repeat(4, 200px); /* Simplified and made responsive */
+    gap: 10px; /* Added gap for better spacing */
+    justify-content: center; /* Center the grid items */
+    align-items: start; /* Align items to start */
+    
+}
+
+#likedPdfs {
+    display: grid; /* Visible by default */
+}
+
+#savedPdfs {
+    display: none; /* Hidden by default */
+}
+
+#content {
+    flex: 1;
+}
+footer {
+    background-color:rgba(255, 255, 255, 0.402);
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+}
+footer a {
+    color: #e2660e;
+    text-decoration: none;
+    margin: 0 10px;
+}
+footer a:hover {
+    text-decoration: underline;
+}   
+
+
+
+#userIcon {
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 30px;
+}
+

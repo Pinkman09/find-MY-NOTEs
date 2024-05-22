@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In</title>
+    <link rel="stylesheet" href="/stylesheet/signIn.css">
+    <script>
+        // JavaScript function to show a pop-up window with an error message
+        function showErrorPopup() {
+            alert("Invalid username or password. Please try again."); // You can replace this with a more stylish modal dialog if you prefer
+        }
+
+        // Check if there's an error parameter in the URL
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const error = urlParams.get('error');
+            if (error) {
+                // If there's an error parameter, show the error pop-up
+                showErrorPopup();
+            }
+        };
+    </script>
+</head>
+<body>
+    <form action="/signIn" method="post"> <!-- Updated action to POST request -->
+        <input type="text" name="username" placeholder="Username"><br> <!-- Added name attribute to input fields -->
+        <input type="password" name="password" placeholder="Password"><br> <!-- Added name attribute to input fields -->
+        <button type="submit">Sign In</button><br> <!-- Updated button type to submit -->
+        <p id="msg">Don't Have an account ? <span style="color: Blue;"><a href="/register">Register</a></span></p>
+    </form>
+</body>
+</html>

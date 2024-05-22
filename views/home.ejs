@@ -1,4 +1,3 @@
-<!-- views/home.ejs -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,21 +11,28 @@
         <p><span style="color: red;">find</span> <span style="color: white; font-weight: bold;">MY-NOTEs</span></p>
         <div id="buttonDiv">
             <button type="button" id="uploadButton" onclick="showForm()">Upload</button>
-            <button type="button" id="logInButton">Log In</button>
+            <% if (!loggedIn) { %>
+                <a href="/logIn"><button type="button" id="logInButton">Log In</button></a>
+            <% } else { %>
+                <a href="/userAccount"><img id="userIcon" src="/img/user.png" alt="User Account"></a>
+            <% } %>
         </div>
     </div>
+    
     <div id="category">
-        <a href="">Computer Science</a>
-        <a href="">Electrical Engineering</a>
-        <a href="">Civil Engineering</a>
-        <a href="">Mechanical Engineering</a>
+        <a href="/?category=computerScience">Computer Science</a>
+        <a href="/?category=electricalEngineering">Electrical Engineering</a>
+        <a href="/?category=civilEngineering">Civil Engineering</a>
+        <a href="/?category=mechanicalEngineering">Mechanical Engineering</a>
     </div>
-
-    <form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data">
+    <form id="uploadForm" action="/upload" method="POST" enctype="multipart/form-data">
         <p>File Name</p>
         <input type="text" id="fileName" name="fileName" placeholder="Enter File Name here">
         <p>Upload PDF</p>
         <input id="pdfFile" type="file" name="pdfFile" accept="application/pdf,application/vnd.ms-excel" required />
+        <p>Upload Thumbnail</p>
+        <input type="file" name="thumbnail" accept="image/*">
+
         <p>Choose Category</p>
         <div id="categoryDiv">
             <div class="categoryItem">
@@ -54,7 +60,7 @@
             </div>
         </div>
     </form>
-
+    
     <div id="pdfs">
         <% pdfs.forEach(pdf => { %>
         <div class="pdfCard">
@@ -62,16 +68,18 @@
             <p id="pdfTitle"><%= pdf.fileName %></p>
             <p id="addedBy">Added By <%= pdf.addedBy %></p>
             <div id="cardButton">
-                <div id="likeDiv">
-                    <img src="/img/like.png" alt="Like">
-                    <p><%= pdf.likeCount %></p>
+                <div id="likeDiv" data-pdf-id="<%= pdf.id %>">
+                    <img src="<%= likedPdfs.includes(pdf.id) ? '/img/liked.png' : '/img/like.png' %>" alt="Like" class="likeIcon">
+                    <p class="likeCount"><%= pdf.likeCount %></p>
                 </div>
-                <img src="/img/save.png" alt="Save">
+                <div id="saveDiv" data-pdf-id="<%= pdf.id %>">
+                    <img src="<%= savedPdfs.includes(pdf.id) ? '/img/saved.png' : '/img/save.png' %>" alt="Save" class="saveIcon">
+                </div>
             </div>
         </div>
         <% }); %>
     </div>
-
+    
     <script src="/js/home.js"></script>
 </body>
 </html>

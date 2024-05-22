@@ -1,0 +1,35 @@
+body{
+    background-image: url("/img/1.jpg");
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins',sans-serif;
+    box-sizing: border-box;
+}
+
+form {
+    padding-top: 200px;
+    text-align: center;
+    margin: auto;
+    width: 400px;
+    /* background-color: red; */
+}
+input {
+    font-size: 16px;
+    border-style: none;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 10px;
+    height: 20px;
+    background-color: white;
+}
+#msg {
+    font-size: 14px;
+}
+button {
+    background-color: black;
+    color: white;
+    border-style: none;
+    padding: 10px;
+    border-radius: 10px;
+    width: 100px;
+}

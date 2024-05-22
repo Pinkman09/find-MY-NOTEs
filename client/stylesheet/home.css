@@ -22,6 +22,9 @@ body {
 } */
 #buttonDiv {
     margin-left: auto;
+    display: grid;
+    grid-template-columns: auto auto;
+    
 }
 #uploadButton {
     border-style: none;
@@ -149,9 +152,7 @@ form label {
     border-radius: 5px;
 }
 
-#pdfs {
-    padding: 10px;
-}
+
 #thumbnail {
     margin: auto;
     width: 100%;
@@ -159,16 +160,7 @@ form label {
     object-fit: cover;
     border-radius: 5px;
 }
-.pdfCard {
-    margin-bottom: 10px;
-    display: grid;
-    grid-template-rows: auto auto auto auto;
-    padding: 5px;
-    border-radius: 5px;
-    width: 150px;
-    height: 200px;
-    background-color: white;
-}
+
 #pdfTitle {
     font-weight: bold;
     padding: 0px;
@@ -201,7 +193,16 @@ form label {
     margin: 0px;
     font-size: 10px;
 }
-
+.pdfCard {
+    margin-bottom: 10px;
+    display: grid;
+    grid-template-rows: auto auto auto auto;
+    padding: 5px;
+    border-radius: 5px;
+    width: 150px;
+    height: 200px;
+    background-color: white;
+}
 
 #pdfs {
     width: 800px;
@@ -209,9 +210,34 @@ form label {
     margin-right: auto;
     margin-top: 50px;
     display: grid;
-
+    padding: 10px;
     grid-template-columns: 200px 200px 200px 200px;
     justify-content: space-evenly;
     align-items: center;
-    
+}
+
+#content {
+    flex: 1;
+}
+footer {
+    background-color:rgba(255, 255, 255, 0.402);
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+}
+footer a {
+    color: #e2660e;
+    text-decoration: none;
+    margin: 0 10px;
+}
+footer a:hover {
+    text-decoration: underline;
+}   
+
+
+
+#userIcon {
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 30px;
 }

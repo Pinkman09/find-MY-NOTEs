@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Account</title>
+    <link rel="stylesheet" href="/stylesheet/userAccount.css">
+</head>
+<body>
+    <div id="userDetail">
+        <img src="/img/user.png" alt="User Image">
+        <h3><%= username %></h3>
+    </div>
+    <div id="buttonDiv">
+        <a href="#" id="likedLink" class="active">Liked PDF</a>
+        <a href="#" id="savedLink">Saved PDF</a>
+    </div>
+    <div id="pdfs">
+        <div id="likedPdfs">
+            <% likedPdfs.forEach(pdf => { %>
+            <div class="pdfCard">
+                <img id="thumbnail" src="<%= pdf.thumbnailPath %>" alt="Thumbnail">
+                <p id="pdfTitle"><%= pdf.fileName %></p>
+                <p id="addedBy">Added By <%= pdf.addedBy %></p>
+                <div id="cardButton">
+                    <div id="likeDiv" data-pdf-id="<%= pdf.id %>">
+                        <img src="/img/liked.png" alt="Like" class="likeIcon">
+                        <p class="likeCount"><%= pdf.likeCount %></p>
+                    </div>
+                    <div id="saveDiv" data-pdf-id="<%= pdf.id %>">
+                        <img src="<%= savedPdfs.map(savedPdf => savedPdf.id).includes(pdf.id) ? '/img/saved.png' : '/img/save.png' %>" alt="Save" class="saveIcon">
+                    </div>
+                </div>
+            </div>
+            <% }); %>
+        </div>
+        <div id="savedPdfs" style="display: none;">
+            <% savedPdfs.forEach(pdf => { %>
+            <div class="pdfCard">
+                <img id="thumbnail" src="<%= pdf.thumbnailPath %>" alt="Thumbnail">
+                <p id="pdfTitle"><%= pdf.fileName %></p>
+                <p id="addedBy">Added By <%= pdf.addedBy %></p>
+                <div id="cardButton">
+                    <div id="likeDiv" data-pdf-id="<%= pdf.id %>">
+                        <img src="<%= likedPdfs.map(likedPdf => likedPdf.id).includes(pdf.id) ? '/img/liked.png' : '/img/like.png' %>" alt="Like" class="likeIcon">
+                        <p class="likeCount"><%= pdf.likeCount %></p>
+                    </div>
+                    <div id="saveDiv" data-pdf-id="<%= pdf.id %>">
+                        <img src="/img/saved.png" alt="Save" class="saveIcon">
+                    </div>
+                </div>
+            </div>
+            <% }); %>
+        </div>
+    </div>
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const likedLink = document.getElementById('likedLink');
+    const savedLink = document.getElementById('savedLink');
+    const likedPdfsDiv = document.getElementById('likedPdfs');
+    const savedPdfsDiv = document.getElementById('savedPdfs');
+
+    likedLink.addEventListener('click', function(event) {
+        event.preventDefault();
+        likedLink.classList.add('active');
+        savedLink.classList.remove('active');
+        likedPdfsDiv.style.display = 'grid';
+        savedPdfsDiv.style.display = 'none';
+    });
+
+    savedLink.addEventListener('click', function(event) {
+        event.preventDefault();
+        savedLink.classList.add('active');
+        likedLink.classList.remove('active');
+        likedPdfsDiv.style.display = 'none';
+        savedPdfsDiv.style.display = 'grid';
+    });
+});
+
+    </script>
+</body>
+</html>
