@@ -54,7 +54,7 @@ body {
 #navbar {
     width: 100%;
     position: fixed;
-    top: 0px;
+    top: 15px;
     padding: 5px;
     display: grid;
     grid-template-columns: auto auto ;
@@ -219,20 +219,6 @@ form label {
 #content {
     flex: 1;
 }
-footer {
-    background-color:rgba(255, 255, 255, 0.402);
-    color: white;
-    text-align: center;
-    padding: 10px 0;
-}
-footer a {
-    color: #e2660e;
-    text-decoration: none;
-    margin: 0 10px;
-}
-footer a:hover {
-    text-decoration: underline;
-}   
 
 
 
@@ -240,4 +226,24 @@ footer a:hover {
     margin-left: 10px;
     margin-right: 10px;
     width: 30px;
+}
+/* Wrapper to take up remaining space and ensure footer is at the bottom */
+.wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Content should expand to take available space */
+#pdfs, #uploadForm, #category {
+    flex: 1;
+}
+
+/* Footer styling */
+#footer {
+    background-color: #33333323;
+    color: #fff;
+    text-align: center;
+    padding: 1em 0;
+    flex-shrink: 0;
 }
